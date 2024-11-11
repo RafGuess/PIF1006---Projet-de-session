@@ -13,7 +13,7 @@ namespace PIF1006_tp1
     {
         public char Input { get; set; }
         public State TransiteTo { get; set; }
-
+        
         public Transition(char input, State transiteTo)
         {
             Input = input;
@@ -22,7 +22,7 @@ namespace PIF1006_tp1
 
         public override string ToString()
         {
-            return base.ToString(); // Modifier ce code pour retourner une représentation plus cohérente d'une transition
+            return $"{Input} -> {TransiteTo.Name}";
         }
     }
 }

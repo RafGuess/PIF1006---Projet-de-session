@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace PIF1006_tp1
 {
@@ -12,8 +17,8 @@ namespace PIF1006_tp1
         public State CurrentState { get; private set; }
         public List<State> States { get; private set; }
         public bool IsValid { get; private set; }
-
-        public Automate(string filePath)
+        
+        public Automate(string filePath) //string filePath
         {
             States = new List<State>();
             LoadFromFile(filePath);
@@ -21,7 +26,7 @@ namespace PIF1006_tp1
 
         private void LoadFromFile(string filePath)
         {
-            // Vous devez pouvoir charger à partir d'un fichier quelconque.  Cela peut être un fichier XML, JSON, texte, binaire, ...
+            // Vous devez pouvoir charger à partir d'un fichier quelconque. Cela peut être un fichier XML, JSON, texte, binaire, ...
             // P.ex. avec un fichier texte, vous pouvoir balayer ligne par ligne et interprété en séparant chaque ligne en un tableau de strings
             // dont le premier représente l'action, et la suite les arguments. L'équivalent de l'automate décrit manuellement dans la classe
             // Program pourrait être:
@@ -41,15 +46,151 @@ namespace PIF1006_tp1
             //     et on l'ajoute à une liste d'état; les 2 et 3e argument représentent alors si c'est un état final, puis si c'est l'état initial
             //   - Si c'est "transition" on cherche dans la liste d'état l'état qui a le nom en 1er argument et on ajoute la transition avec les 2 autres
             //     arguments à sa liste
-            // 
+
+            IsValid = true;
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException($"File not found: {filePath}");
+            }
+            
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentNullException(nameof(filePath), "File path cannot be null or empty.");
+            }   
+            
+            List<Tuple<string, string>> Erreurs = new List<Tuple<string, string>>();
+            
+            foreach (var (ligne, index) in File.ReadLines(filePath).Select((line, index) => (line, index + 1)))
+            {
+
+                try
+                {  
+                    string[] mots = ligne.Split(' ');
+
+                    switch (mots[0])
+                    {
+                        case "state":
+                            if (mots.Length < 4)
+                            {
+                                Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "State definition is incomplete."));
+                                break;
+                            }
+                            string nom = mots[1];
+                        
+                            bool isFinal = mots[2] == "1";
+
+                            State state = new State(nom, isFinal);
+                        
+                            States.Add(state);
+
+                            if (mots[3] == "1")
+                            {
+                                if (InitialState != null)
+                                {
+                                    throw new Exception("InitialState is already defined");      // Todo(): J'ai fait que l'etat ne va juste pas etre letat initial mais on garde quand meme letat dans la liste
+                                }
+                                InitialState = state;
+                            }
+                            break;
+
+                        case "transition":
+                            if (mots.Length < 4)
+                            {
+                                Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Transition definition is incomplete."));
+                                break;
+                            }
+                            string initialState = mots[1];
+                            char input = mots[2][0];
+                            string TransiteTo = mots[3];
+                        
+                            State stateFound = States.FirstOrDefault(state => state.Name == initialState);
+                            State transitStateFound = States.FirstOrDefault(state => state.Name == TransiteTo);
+
+                            if (stateFound == null || transitStateFound == null)
+                            {
+                                Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Initial state or transition state not found."));
+                            }
+                            else
+                            {
+                                stateFound.Transitions.Add(new Transition(input, transitStateFound));
+                            }
+                            
+                            // TODO() La on add la transition pour ensuite la supprimer
+                            List<char> inputs = new List<char>();
+                            foreach (var transition in stateFound.Transitions.ToList())
+                            {
+                                if (inputs.Contains(transition.Input))
+                                {
+                                    stateFound.Transitions.Remove(transition);
+                                    Erreurs.Add(new Tuple<string, string>(index + " " + ligne, $"L'input:{transition.Input} était déjà utilisé donc on la supprime -- (Determinisation facile)."));
+                                }
+                                else
+                                {
+                                    inputs.Add(transition.Input);
+                                }
+                            }
+                            
+                            break;
+
+                        default:
+                            Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Mot non reconnue"));
+                            break;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Erreurs.Add(new Tuple<string, string>(index + " " + ligne, ex.Message));
+                }
+            }
+            
+            if (!States.Any())
+            {
+                Erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etats dans l'automate"));
+                IsValid = false;
+            }
+            
+            if (InitialState != null)
+            {
+                Console.WriteLine($"Initial State: {InitialState.Name}");
+                CurrentState = InitialState;
+            }
+            else
+            {
+                Erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etat inital dans l'automate"));
+                IsValid = false;
+            }
+
+            foreach (var state in States)
+            {
+                Console.WriteLine($"State: {state.Name}, Final: {state.IsFinal}");
+                Console.WriteLine($"Transitions: {string.Join(", ", state.Transitions.Select(t => t.ToString()))}");
+            }
+
+            // Log errors if any
+            if (Erreurs.Any())
+            {
+                foreach (var error in Erreurs)
+                {
+                    Console.WriteLine($"Error on Line: {error.Item1}: {error.Item2}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("File processed successfully.");
+            }
+            
+            Console.WriteLine(IsValid);
+            
+            
+
             // Considérez que:
-            //   - S'il y a d'autres termes, les lignes pourraient être ignorées;
-            //   - Si l'état n'est pas trouvé dans la liste (p.ex. l'état est référencé mais n'existe pas (encore)), la transition est ignorée
+            //   - S'il y a d'autres termes, les lignes pourraient être ignorées;   // OK
+            //   - Si l'état n'est pas trouvé dans la liste (p.ex. l'état est référencé mais n'existe pas (encore)), la transition est ignorée  // OK
             //   - Après lecture du fichier:
-            //          - si l'automate du fichier n'est pas déterministe (vous devrez penser à comment vérifier cela -> l'état et la transition
+            //          - si l'automate du fichier n'est pas déterministe (vous devrez penser à comment vérifier cela -> l'état et la transition    // OK
             //            en défaut doit être indiquée à l'utilisateur), OU
-            //          - si l'automate n'a aucun état, ou aucun état initial
-            //     l'automate est considéré comme "invalide" (la propriété IsValid doit alors valoir faux)
+            //          - si l'automate n'a aucun état, ou aucun état initial  // OK 
+            //     l'automate est considéré comme "invalide" (la propriété IsValid doit alors valoir faux) // OK
             //   - Lorsque des lignes (ou l'automate) sont ignorées ou à la fin l'automate rejeté, cela doit être indiqué à l'utilisateur
             //     à la console avec la ligne/raison du "rejet".
         }
@@ -77,12 +218,15 @@ namespace PIF1006_tp1
         {
             // Vous devez faire du code pour indiquer ce que signifie réinitialiser l'automate avant chaque validation.
         }
-
+        
         public override string ToString()
-        {
+        {   
             // Vous devez modifier cette partie de sorte à retourner un équivalent string qui décrit tous les états et
             // la table de transitions de l'automate.
             return base.ToString(); // On ne retournera donc pas le ToString() par défaut
         }
+        
+        
+        
     }
 }

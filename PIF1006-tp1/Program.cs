@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using PIF1006_tp1;
 
 namespace PIF1006_tp1
 {
@@ -16,20 +19,40 @@ namespace PIF1006_tp1
     {
         static void Main(string[] args)
         {
-            
-            
             //---------------------------------------------------------------------------------------------------------------------------
             // Vous devez faire une application dont les étapes d'interactions utilisateurs vont exactement comme suit:
             //
-            //      (1) Afficher une entête en console comportant:
+            //      (1) Afficher une entête en console comportant:  // Fait
             //          -> Nom de votre application
             //          -> Liste de vos noms complets et codes permanents
+            List<(string, string)> nom_CP = new List<(string, string)>
+            {
+                ("Julien Desrosiers", "DESJ70100201"),
+                ("Océane Rakotoarisoa", "RAKS77350500"),
+                ("Lily Occhibelli", "OCCL72360500"),
+                ("Abderraouf Guessoum", "GUEA80320400"),
+                
+            };
+            
+            Console.WriteLine("NOM DE NOTRE APPLICATION");      // TODO(): Trouver un nom pour notre application
+            foreach (var (nom, code_permanent) in nom_CP)
+            {
+                Console.WriteLine($"Nom complet: {nom}, code permanent: {code_permanent}");
+            }
+            
             //
             //      (2) Charger un fichier en spécifiant le chemin (relatif) du fichier.  Vous pouvez charger un fichier par défaut au démarrage;
             //          ->  Pour le format et la façon de charger le fichier, référez-vous aux détails en commentaire dans la méthode LoadFromFile()
             //              de la classe Automate.
             //          ->  Si après chargement du fichier l'automate est invalide (sa propriété IsValid est à faux), l'application se ferme suite à
             //              l'appuie sur ENTER par l'utilisateur.
+            
+            string filepath2 = "D:\\École\\Session 5\\MathInfo\\PIF1006\\PIF1006-tp1\\Automates\\Automate.txt";
+            string filepath3 = "D:\\École\\Session 5\\MathInfo\\PIF1006\\PIF1006-tp1\\Automates\\Automate2.txt";
+            Automate automate = new Automate(filepath2);
+            
+
+
             //      (3) La représentation de l'automate doit être affichée à la console sous la forme d'une liste des états et la liste des
             //          transitions de chacune d'entre elles, à la manière d'une pseudo table d'action. Si l'état est un état final cela
             //          doit être apparent;
@@ -55,7 +78,7 @@ namespace PIF1006_tp1
             //          ->  Un message doit indiquer si c'est accepté ou rejeté.
             //          ->  Suite à cela, on doit demander à l'utilisateur s'il veut enter un nouvel input plutôt que de quitter
             //              afin de faire des validations en rafales.
-            //
+
             //      (5) Au moment où l'utilisateur choisit de quitter, un message s'affiche lui disant que l'application va se fermer après
             //          avoir appuyé sur ENTER.
         }

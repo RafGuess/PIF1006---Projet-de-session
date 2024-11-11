@@ -1,0 +1,9 @@
+﻿ambon
+transition s0 0 s1
+transition s0 1 s0
+transition s0 1 s1
+transition s1 0 s1
+transition s1 1 s2
+transition s20 0 s89
+transition s3 1 s3
+jambon
