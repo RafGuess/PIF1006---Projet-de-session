@@ -206,7 +206,7 @@ namespace PIF1006_tp1
             // transitions possibles pour un état et un input donné, le 1er trouvé dans la liste est le chemin emprunté.
             // Si aucune transition n'est trouvé pour un état courant et l'input donné, cela doit retourner faux;
             // Si tous les caractères ont été pris en compte, on vérifie si l'état courant est final ou non et on retourne
-            // vrai ou faux selon.
+            // vrai ou faux selon. 
 
             // VOUS DEVEZ OBLIGATOIREMENT AFFICHER la suite des états actuel, input lu, et état transité pour qu'on puisse
             // suivre le déroulement de l'analyse.

@@ -47,9 +47,19 @@ namespace PIF1006_tp1
             //          ->  Si après chargement du fichier l'automate est invalide (sa propriété IsValid est à faux), l'application se ferme suite à
             //              l'appuie sur ENTER par l'utilisateur.
             
-            string filepath2 = "D:\\École\\Session 5\\MathInfo\\PIF1006\\PIF1006-tp1\\Automates\\Automate.txt";
-            string filepath3 = "D:\\École\\Session 5\\MathInfo\\PIF1006\\PIF1006-tp1\\Automates\\Automate2.txt";
-            Automate automate = new Automate(filepath2);
+            
+            //TODO : utiliser un chemin relatif au projet et non à l'ordi local
+            
+           // Obtenez le chemin de base du projet (répertoire de sortie)
+           string baseDirectory = AppContext.BaseDirectory;
+           
+           // Construisez les chemins relatifs vers les fichiers dans le dossier "Automates"
+           string filepath2 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "Automate.txt");
+           string filepath3 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "Automate2.txt");
+           
+           // Instanciez l'automate en utilisant le chemin relatif
+           Automate automate = new Automate(filepath2);
+
             
 
 
