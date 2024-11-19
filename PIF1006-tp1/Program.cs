@@ -54,8 +54,11 @@ namespace PIF1006_tp1
            string baseDirectory = AppContext.BaseDirectory;
            
            // Construisez les chemins relatifs vers les fichiers dans le dossier "Automates"
-           string filepath2 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "Automate.txt");
-           string filepath3 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "Automate2.txt");
+           string filepath1 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateConforme.txt");
+           string filepath2 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateNonDeterministe.txt");
+           string filepath3 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomatPartiellementConforme.txt");
+           string filepath4 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateSansEtat.txt");
+           string filepath5 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateSansEtatInitial.txt");
            
            // Instanciez l'automate en utilisant le chemin relatif
            Automate automate = new Automate(filepath2);
