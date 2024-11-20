@@ -94,13 +94,13 @@ namespace PIF1006_tp1
         {
             if (i == selectedIndex)
             {
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.BackgroundColor = ConsoleColor.Black;
                 Console.Write("> ");
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.Write("  ");
             }
