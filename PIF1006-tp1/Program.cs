@@ -54,17 +54,18 @@ namespace PIF1006_tp1
            string baseDirectory = AppContext.BaseDirectory;
            
            // Construisez les chemins relatifs vers les fichiers dans le dossier "Automates"
-           string filepath1 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateConforme.txt");
+           string filepath1 = Path.Combine(baseDirectory, "Automates", "AutomatePartiellementConforme.txt");
            string filepath2 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateNonDeterministe.txt");
            string filepath3 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomatPartiellementConforme.txt");
            string filepath4 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateSansEtat.txt");
            string filepath5 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateSansEtatInitial.txt");
            
            // Instanciez l'automate en utilisant le chemin relatif
-           Automate automate = new Automate(filepath2);
-
-            
-
+           Automate automate1 = new Automate(filepath1);
+           Automate automate2 = new Automate(filepath2);
+           Automate automate3 = new Automate(filepath3);
+           Automate automate4 = new Automate(filepath4);
+           Automate automate5 = new Automate(filepath5);
 
             //      (3) La représentation de l'automate doit être affichée à la console sous la forme d'une liste des états et la liste des
             //          transitions de chacune d'entre elles, à la manière d'une pseudo table d'action. Si l'état est un état final cela
@@ -80,11 +81,11 @@ namespace PIF1006_tp1
             //                      --0--> s1
             //                      --1--> s3
             //                  (s3)
-            //
             //              Où s0 et s3 sont des états finaux (parenthèses), s0 est l'état initial (square brackets) et
             //              s3 n'a pas de transition vers d'autres états
             //          ->  Vous DEVEZ surdéfinir les méthodes ToString() des différentes classes fournies de sorte à faciliter l'affichage
-            //
+            
+            
             //      (4) Soumettre un input en tant que chaîne de 0 ou de 1
             //          ->  Assurez-vous que la chaine passée ne contient QUE ces caractères
             //              avant d'envoyer n'est pas obligatoire, mais cela ne doit pas faire planter de l'autre coté;
@@ -92,8 +93,68 @@ namespace PIF1006_tp1
             //          ->  Suite à cela, on doit demander à l'utilisateur s'il veut enter un nouvel input plutôt que de quitter
             //              afin de faire des validations en rafales.
 
+            
             //      (5) Au moment où l'utilisateur choisit de quitter, un message s'affiche lui disant que l'application va se fermer après
             //          avoir appuyé sur ENTER.
+            
+            Console.WriteLine("L'application va se fermer après avoir appuyé sur ENTER.");
+            Console.ReadLine();
+            
+            // TODO: Menu pour permettre à l'utilisateur de choisir un automate + une option pour quitter
+            Console.WriteLine("Choisissez un automate à utiliser:");
+            Console.WriteLine("1. Automate 1");
+            Console.WriteLine("2. Automate 2");
+            Console.WriteLine("3. Automate 3");
+            Console.WriteLine("4. Automate 4");
+            Console.WriteLine("5. Automate 5");
+            Console.WriteLine("6. Quitter");
+
+            int choix;
+            do
+            {
+                Console.Write("Entrez votre choix (1-6): ");
+            } while (!int.TryParse(Console.ReadLine(), out choix) || choix < 1 || choix > 6);
+
+            if (choix == 6)
+            {
+                Console.WriteLine("L'application va se fermer après avoir appuyé sur ENTER.");
+                Console.ReadLine();
+                return;
+            }
+
+            Automate automateChoisi = choix switch
+            {
+                1 => automate1,
+                2 => automate2,
+                3 => automate3,
+                4 => automate4,
+                5 => automate5,
+                _ => automate1
+            };
+
+            // Afficher la représentation de l'automate choisi
+            Console.WriteLine(automateChoisi);
+
+            // Demander l'input et valider avec l'automate choisi
+            string input;
+            do
+            {
+                Console.WriteLine("Entrez une chaîne de 0 et de 1:");
+                input = Console.ReadLine();
+                if (input == "true")
+                {
+                    Console.WriteLine("L'automate accepte la chaîne.");
+                }
+                else
+                {
+                    Console.WriteLine("L'automate rejette la chaîne.");
+                }
+                Console.WriteLine("Voulez-vous entrer une autre chaîne? (O/N)");
+            } while (Console.ReadLine().ToUpper() == "O");
+
+            Console.WriteLine("L'application va se fermer après avoir appuyé sur ENTER.");
+            Console.ReadLine();
+            
         }
     }
 }
