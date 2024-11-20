@@ -25,6 +25,23 @@ namespace PIF1006_tp1
             //      (1) Afficher une entête en console comportant:  // Fait
             //          -> Nom de votre application
             //          -> Liste de vos noms complets et codes permanents
+           
+            
+            //
+            //      (2) Charger un fichier en spécifiant le chemin (relatif) du fichier.  Vous pouvez charger un fichier par défaut au démarrage;
+            //          ->  Pour le format et la façon de charger le fichier, référez-vous aux détails en commentaire dans la méthode LoadFromFile()
+            //              de la classe Automate.
+            //          ->  Si après chargement du fichier l'automate est invalide (sa propriété IsValid est à faux), l'application se ferme suite à
+            //              l'appuie sur ENTER par l'utilisateur.
+            
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+          string[] options = { "Automate 1", "Automate 2", "Automate 3", "Automate 4", "Automate 5", "Quitter" };
+        int selectedIndex = 0;
+
+         while (true)
+         {
+            Console.Clear();
+            
             List<(string, string)> nom_CP = new List<(string, string)>
             {
                 ("Julien Desrosiers", "DESJ70100201"),
@@ -40,16 +57,62 @@ namespace PIF1006_tp1
                 Console.WriteLine($"Nom complet: {nom}, code permanent: {code_permanent}");
             }
             
-            //
-            //      (2) Charger un fichier en spécifiant le chemin (relatif) du fichier.  Vous pouvez charger un fichier par défaut au démarrage;
-            //          ->  Pour le format et la façon de charger le fichier, référez-vous aux détails en commentaire dans la méthode LoadFromFile()
-            //              de la classe Automate.
-            //          ->  Si après chargement du fichier l'automate est invalide (sa propriété IsValid est à faux), l'application se ferme suite à
-            //              l'appuie sur ENTER par l'utilisateur.
+            DisplayMenu(options, selectedIndex);
+
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            switch (keyInfo.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                    break;
+                case ConsoleKey.DownArrow:
+                    selectedIndex = (selectedIndex + 1) % options.Length;
+                    break;
+                case ConsoleKey.Enter:
+                    if (selectedIndex == options.Length - 1)
+                    {
+                        Console.WriteLine("\nL'application va se fermer après avoir appuyé sur ENTER.");
+                        Console.ReadLine();
+                        return;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"Vous avez choisi : {options[selectedIndex]}");
+                        Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
+                        Console.ReadKey(true);
+                    }
+                    break;
+            }
+         } 
+        }
+
+    static void DisplayMenu(string[] options, int selectedIndex)
+    {
+        Console.WriteLine("Choisissez un automate à utiliser:\n");
+        for (int i = 0; i < options.Length; i++)
+        {
+            if (i == selectedIndex)
+            {
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.Write("> ");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.Write("  ");
+            }
+
+            Console.WriteLine(options[i]);
+            Console.ResetColor();
+        }
+            /////////////////////////////////////////////////////////////////////////////////////////////////
             
             
-            //TODO : utiliser un chemin relatif au projet et non à l'ordi local
             
+            /*     
            // Obtenez le chemin de base du projet (répertoire de sortie)
            string baseDirectory = AppContext.BaseDirectory;
            
@@ -99,41 +162,6 @@ namespace PIF1006_tp1
             
             Console.WriteLine("L'application va se fermer après avoir appuyé sur ENTER.");
             Console.ReadLine();
-            
-            // TODO: Menu pour permettre à l'utilisateur de choisir un automate + une option pour quitter
-            Console.WriteLine("Choisissez un automate à utiliser:");
-            Console.WriteLine("1. Automate 1");
-            Console.WriteLine("2. Automate 2");
-            Console.WriteLine("3. Automate 3");
-            Console.WriteLine("4. Automate 4");
-            Console.WriteLine("5. Automate 5");
-            Console.WriteLine("6. Quitter");
-
-            int choix;
-            do
-            {
-                Console.Write("Entrez votre choix (1-6): ");
-            } while (!int.TryParse(Console.ReadLine(), out choix) || choix < 1 || choix > 6);
-
-            if (choix == 6)
-            {
-                Console.WriteLine("L'application va se fermer après avoir appuyé sur ENTER.");
-                Console.ReadLine();
-                return;
-            }
-
-            Automate automateChoisi = choix switch
-            {
-                1 => automate1,
-                2 => automate2,
-                3 => automate3,
-                4 => automate4,
-                5 => automate5,
-                _ => automate1
-            };
-
-            // Afficher la représentation de l'automate choisi
-            Console.WriteLine(automateChoisi);
 
             // Demander l'input et valider avec l'automate choisi
             string input;
@@ -154,7 +182,7 @@ namespace PIF1006_tp1
 
             Console.WriteLine("L'application va se fermer après avoir appuyé sur ENTER.");
             Console.ReadLine();
-            
+            */
         }
     }
 }
