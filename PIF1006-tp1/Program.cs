@@ -34,10 +34,19 @@ namespace PIF1006_tp1
             //          ->  Si après chargement du fichier l'automate est invalide (sa propriété IsValid est à faux), l'application se ferme suite à
             //              l'appuie sur ENTER par l'utilisateur.
             
-            /////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            ///
+        
           string[] options = { "Automate 1", "Automate 2", "Automate 3", "Automate 4", "Automate 5", "Quitter" };
         int selectedIndex = 0;
-
+        Console.WriteLine($"Initialisation:");
+        //string filepath3 = "D:\\École\\Session 5\\MathInfo\\PIF1006\\PIF1006-tp1\\Automates\\Automate2.txt";
+        string filePath1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Automates\Automate.txt");
+        string filePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Automates\Automate2.txt");
+        Console.WriteLine($"FP:{filePath2}");
+        Automate automate = new Automate(filePath2);
+        
+        
          while (true)
          {
             Console.Clear();
@@ -84,7 +93,7 @@ namespace PIF1006_tp1
                     }
                     break;
             }
-         } 
+         }
         }
 
     static void DisplayMenu(string[] options, int selectedIndex)
@@ -111,7 +120,8 @@ namespace PIF1006_tp1
             /////////////////////////////////////////////////////////////////////////////////////////////////
             
             
-            
+                        
+            //TODO : utiliser un chemin relatif au projet et non à l'ordi local
             /*     
            // Obtenez le chemin de base du projet (répertoire de sortie)
            string baseDirectory = AppContext.BaseDirectory;
