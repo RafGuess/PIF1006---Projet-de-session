@@ -20,125 +20,30 @@ namespace PIF1006_tp1
         static void Main(string[] args)
         {
             //---------------------------------------------------------------------------------------------------------------------------
-            // Vous devez faire une application dont les étapes d'interactions utilisateurs vont exactement comme suit:
-            //
-            //      (1) Afficher une entête en console comportant:  // Fait
-            //          -> Nom de votre application
-            //          -> Liste de vos noms complets et codes permanents
-           
             
-            //
             //      (2) Charger un fichier en spécifiant le chemin (relatif) du fichier.  Vous pouvez charger un fichier par défaut au démarrage;
             //          ->  Pour le format et la façon de charger le fichier, référez-vous aux détails en commentaire dans la méthode LoadFromFile()
             //              de la classe Automate.
             //          ->  Si après chargement du fichier l'automate est invalide (sa propriété IsValid est à faux), l'application se ferme suite à
             //              l'appuie sur ENTER par l'utilisateur.
             
-            ////////////////////////////////////////////////////////////////////////////////////////////////
-            ///
-        
-          string[] options = { "Automate 1", "Automate 2", "Automate 3", "Automate 4", "Automate 5", "Quitter" };
-        int selectedIndex = 0;
-        Console.WriteLine($"Initialisation:");
-        //string filepath3 = "D:\\École\\Session 5\\MathInfo\\PIF1006\\PIF1006-tp1\\Automates\\Automate2.txt";
-        string filePath1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Automates\Automate.txt");
-        string filePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Automates\Automate2.txt");
-        Console.WriteLine($"FP:{filePath2}");
-        Automate automate = new Automate(filePath2);
-        
-        
-         while (true)
-         {
-            Console.Clear();
-            
-            List<(string, string)> nom_CP = new List<(string, string)>
-            {
-                ("Julien Desrosiers", "DESJ70100201"),
-                ("Océane Rakotoarisoa", "RAKS77350500"),
-                ("Lily Occhibelli", "OCCL72360500"),
-                ("Abderraouf Guessoum", "GUEA80320400"),
-                
-            };
-            
-            Console.WriteLine("NOM DE NOTRE APPLICATION");      // TODO(): Trouver un nom pour notre application
-            foreach (var (nom, code_permanent) in nom_CP)
-            {
-                Console.WriteLine($"Nom complet: {nom}, code permanent: {code_permanent}");
-            }
-            
-            DisplayMenu(options, selectedIndex);
-
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-            switch (keyInfo.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
-                    break;
-                case ConsoleKey.DownArrow:
-                    selectedIndex = (selectedIndex + 1) % options.Length;
-                    break;
-                case ConsoleKey.Enter:
-                    if (selectedIndex == options.Length - 1)
-                    {
-                        Console.WriteLine("\nL'application va se fermer après avoir appuyé sur ENTER.");
-                        Console.ReadLine();
-                        return;
-                    }
-                    else
-                    {
-                        Console.Clear();
-                        Console.WriteLine($"Vous avez choisi : {options[selectedIndex]}");
-                        Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
-                        Console.ReadKey(true);
-                    }
-                    break;
-            }
-         }
-        }
-
-    static void DisplayMenu(string[] options, int selectedIndex)
-    {
-        Console.WriteLine("Choisissez un automate à utiliser:\n");
-        for (int i = 0; i < options.Length; i++)
-        {
-            if (i == selectedIndex)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.Write("> ");
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.DarkBlue;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.Write("  ");
-            }
-
-            Console.WriteLine(options[i]);
-            Console.ResetColor();
-        }
-            /////////////////////////////////////////////////////////////////////////////////////////////////
-            
-            
-                        
-            //TODO : utiliser un chemin relatif au projet et non à l'ordi local
-            /*     
-           // Obtenez le chemin de base du projet (répertoire de sortie)
-           string baseDirectory = AppContext.BaseDirectory;
            
            // Construisez les chemins relatifs vers les fichiers dans le dossier "Automates"
-           string filepath1 = Path.Combine(baseDirectory, "Automates", "AutomatePartiellementConforme.txt");
-           string filepath2 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateNonDeterministe.txt");
-           string filepath3 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomatPartiellementConforme.txt");
-           string filepath4 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateSansEtat.txt");
-           string filepath5 = Path.Combine(baseDirectory, "..", "..", "..", "Automates", "AutomateSansEtatInitial.txt");
-           
+           string filePath1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+               @"..\..\..\Automates\AutomateConforme.txt");
+           string filePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+               @"..\..\..\Automates\AutomateNonDeterministe.txt");
+           string filePath3 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+               @"..\..\..\Automates\AutomatePartiellementDeterministe.txt");
+           string filePath4 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+               @"..\..\..\Automates\AutomateSansEtat.txt");
+           string filePath5 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+               @"..\..\..\Automates\AutomateSansEtatInitial.txt");
+
            // Instanciez l'automate en utilisant le chemin relatif
-           Automate automate1 = new Automate(filepath1);
-           Automate automate2 = new Automate(filepath2);
-           Automate automate3 = new Automate(filepath3);
-           Automate automate4 = new Automate(filepath4);
-           Automate automate5 = new Automate(filepath5);
+           
+           
+           //----------------------------------------------------------------------------------------------------------------------------
 
             //      (3) La représentation de l'automate doit être affichée à la console sous la forme d'une liste des états et la liste des
             //          transitions de chacune d'entre elles, à la manière d'une pseudo table d'action. Si l'état est un état final cela
@@ -157,8 +62,8 @@ namespace PIF1006_tp1
             //              Où s0 et s3 sont des états finaux (parenthèses), s0 est l'état initial (square brackets) et
             //              s3 n'a pas de transition vers d'autres états
             //          ->  Vous DEVEZ surdéfinir les méthodes ToString() des différentes classes fournies de sorte à faciliter l'affichage
-            
-            
+
+
             //      (4) Soumettre un input en tant que chaîne de 0 ou de 1
             //          ->  Assurez-vous que la chaine passée ne contient QUE ces caractères
             //              avant d'envoyer n'est pas obligatoire, mais cela ne doit pas faire planter de l'autre coté;
@@ -166,10 +71,9 @@ namespace PIF1006_tp1
             //          ->  Suite à cela, on doit demander à l'utilisateur s'il veut enter un nouvel input plutôt que de quitter
             //              afin de faire des validations en rafales.
 
-            
-            //      (5) Au moment où l'utilisateur choisit de quitter, un message s'affiche lui disant que l'application va se fermer après
-            //          avoir appuyé sur ENTER.
-            
+
+            // todo: mettre ce code là où il est nécessaire (vraiment pas ici) - AG
+            /*
             Console.WriteLine("L'application va se fermer après avoir appuyé sur ENTER.");
             Console.ReadLine();
 
@@ -193,6 +97,121 @@ namespace PIF1006_tp1
             Console.WriteLine("L'application va se fermer après avoir appuyé sur ENTER.");
             Console.ReadLine();
             */
+            
+            //---------------------------------------------------------------------------------------------------------------------------
+            
+            //---------------------------------------------------------------------------------------------------------------------------
+            // todo: question 1 (entête fait, menu est fonctionnel, reste plus qu'à implémenter les fonctions de chaque option)
+            // Vous devez faire une application dont les étapes d'interactions utilisateurs vont exactement comme suit:
+            //
+            //      (1) Afficher une entête en console comportant:  // Fait
+            //          -> Nom de votre application
+            //          -> Liste de vos noms complets et codes permanents
+            string[] options = { "Automate 1", "Automate 2", "Automate 3", "Automate 4", "Automate 5", "Quitter" };
+            int selectedIndex = 0;
+                   
+            while (true)
+            {
+                Console.Clear();
+                List<(string, string)> nom_CP = new List<(string, string)>
+                {
+                    ("Julien Desrosiers", "DESJ70100201"),
+                    ("Océane Rakotoarisoa", "RAKS77350500"),
+                    ("Lily Occhibelli", "OCCL72360500"),
+                    ("Abderraouf Guessoum", "GUEA80320400"),
+                           
+                };
+                       
+                Console.WriteLine("Les internationaux (et Julien)"); 
+                foreach (var (nom, code_permanent) in nom_CP)
+                {
+                    Console.WriteLine($"Nom complet: {nom}, code permanent: {code_permanent}");
+                }
+                       
+                DisplayMenu(options, selectedIndex);
+           
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        selectedIndex = (selectedIndex + 1) % options.Length;
+                        break;
+                    case ConsoleKey.Enter:
+                        //      todo: Question 5
+                        //      (5) Au moment où l'utilisateur choisit de quitter, un message s'affiche lui disant que l'application va se fermer après
+                        //          avoir appuyé sur ENTER.
+                        if (selectedIndex == options.Length - 1)
+                        {
+                            Console.WriteLine("\nL'application va se fermer après avoir appuyé sur ENTER.");
+                            Console.ReadLine();
+                            return;
+                        }
+                        else if (selectedIndex == 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Vous avez sélectionné l'automate conforme.");
+                            Automate automate1 = new Automate(filePath1);
+                            Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
+                            Console.ReadKey(true);
+                        }
+                        else if (selectedIndex == 1)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Vous avez sélectionné l'automate non-déterministe.");
+                            Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
+                            Console.ReadKey(true);
+                        }
+                        else if (selectedIndex == 2)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Vous avez sélectionné l'automate partiellement conforme.");
+                            Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
+                            Console.ReadKey(true);
+                        }
+                        else if (selectedIndex == 3)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Vous avez sélectionné l'automate sans état.");
+                            Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
+                            Console.ReadKey(true);
+                        }
+                        else if (selectedIndex == 4)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Vous avez sélectionné l'automate sans état initial.");
+                            Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
+                            Console.ReadKey(true);
+                        }
+                        break;
+                }
+            }
+                    
+            static void DisplayMenu(string[] options, int selectedIndex)
+            {
+                Console.WriteLine("Choisissez un automate à utiliser:\n");
+                for (int i = 0; i < options.Length; i++)
+                {
+                    if (i == selectedIndex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write("> ");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write("  ");
+                    }
+                    
+                    Console.WriteLine(options[i]);
+                    Console.ResetColor();
+                }
+            }
+            
         }
     }
 }
