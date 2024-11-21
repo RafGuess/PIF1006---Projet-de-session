@@ -154,6 +154,7 @@ namespace PIF1006_tp1
                             Console.Clear();
                             Console.WriteLine("Vous avez sélectionné l'automate conforme.");
                             Automate automate1 = new Automate(filePath1);
+                            Console.WriteLine(automate1.ToString());
                             Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
                             Console.ReadKey(true);
                         }

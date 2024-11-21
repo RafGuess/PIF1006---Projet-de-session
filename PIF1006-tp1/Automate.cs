@@ -259,10 +259,36 @@ namespace PIF1006_tp1
         }
         
         public override string ToString()
-        {   
-            // Vous devez modifier cette partie de sorte à retourner un équivalent string qui décrit tous les états et
-            // la table de transitions de l'automate.
-            return base.ToString(); // On ne retournera donc pas le ToString() par défaut
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var state in States)
+            {
+                // Afficher l'état initial avec des crochets carrés
+                if (state == InitialState)
+                {
+                    sb.AppendLine($"[{state.Name}]{(state.IsFinal ? ")" : "")}");
+                }
+                // Afficher les états finaux avec des parenthèses
+                else if (state.IsFinal)
+                {
+                    sb.AppendLine($"({state.Name})");
+                }
+                else
+                {
+                    sb.AppendLine(state.Name);
+                }
+
+                // Afficher les transitions pour chaque état
+                foreach (var transition in state.Transitions)
+                {
+                    sb.AppendLine($"--{transition.Input}--> {transition.TransiteTo.Name}");
+                }
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
         
         
