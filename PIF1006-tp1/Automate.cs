@@ -262,6 +262,7 @@ namespace PIF1006_tp1
         {
             StringBuilder sb = new StringBuilder();
 
+            Console.WriteLine("\n--- Représentation de l'automate ---\n");
             foreach (var state in States)
             {
                 // Afficher l'état initial avec des crochets carrés

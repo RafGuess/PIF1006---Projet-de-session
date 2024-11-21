@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using PIF1006_tp1;
 
 namespace PIF1006_tp1
@@ -34,7 +35,7 @@ namespace PIF1006_tp1
            string filePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
                @"..\..\..\Automates\AutomateNonDeterministe.txt");
            string filePath3 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
-               @"..\..\..\Automates\AutomatePartiellementDeterministe.txt");
+               @"..\..\..\Automates\AutomatePartiellementConforme.txt");
            string filePath4 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
                @"..\..\..\Automates\AutomateSansEtat.txt");
            string filePath5 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
@@ -107,7 +108,7 @@ namespace PIF1006_tp1
             //      (1) Afficher une entête en console comportant:  // Fait
             //          -> Nom de votre application
             //          -> Liste de vos noms complets et codes permanents
-            string[] options = { "Automate 1", "Automate 2", "Automate 3", "Automate 4", "Automate 5", "Quitter" };
+            string[] options = { "Automate Conforme", "Automate Non Déterministe", "Automate Partiellement Conforme", "Automate Sans Etat", "Automate Sans Etat Initial", "Quitter" };
             int selectedIndex = 0;
                    
             while (true)
@@ -130,6 +131,8 @@ namespace PIF1006_tp1
                        
                 DisplayMenu(options, selectedIndex);
            
+                string input;
+                
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                 switch (keyInfo.Key)
                 {
@@ -146,43 +149,193 @@ namespace PIF1006_tp1
                         if (selectedIndex == options.Length - 1)
                         {
                             Console.WriteLine("\nL'application va se fermer après avoir appuyé sur ENTER.");
+                            Console.WriteLine("Merci d'avoir utilisé notre application, n'oubliez pas de nous laisser un 100% en partant! Merci :)");
                             Console.ReadLine();
                             return;
                         }
                         else if (selectedIndex == 0)
                         {
                             Console.Clear();
-                            Console.WriteLine("Vous avez sélectionné l'automate conforme.");
+                            Console.WriteLine("Vous avez sélectionné l'automate Conforme.");
                             Automate automate1 = new Automate(filePath1);
+    
+                            if (!automate1.IsValid)
+                            {
+                                Console.WriteLine("L'automate n'est pas valide. Appuyez sur ENTER pour revenir au menu principal.");
+                                Console.ReadLine();
+                                continue;
+                            }
+    
                             Console.WriteLine(automate1.ToString());
+
+                            do
+                            {
+                                Console.WriteLine("\nEntrez une chaîne de 0 et de 1 (ou 'q' pour quitter):");
+                                input = Console.ReadLine();
+
+                                if (input.ToLower() == "q")
+                                    break;
+
+                                if (input.All(c => c == '0' || c == '1'))
+                                {
+                                    bool isAccepted = automate1.Validate(input);
+                                    Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Entrée invalide. Veuillez n'utiliser que des 0 et des 1.");
+                                }
+                            } while (true);
+
                             Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
                             Console.ReadKey(true);
                         }
+
                         else if (selectedIndex == 1)
                         {
                             Console.Clear();
-                            Console.WriteLine("Vous avez sélectionné l'automate non-déterministe.");
+                            Console.WriteLine("Vous avez sélectionné l'automate Non Déterministe.");
+                            Automate automate2 = new Automate(filePath2);
+    
+                            if (!automate2.IsValid)
+                            {
+                                Console.WriteLine("L'automate n'est pas valide. Appuyez sur ENTER pour revenir au menu principal.");
+                                Console.ReadLine();
+                                continue;
+                            }
+    
+                            Console.WriteLine(automate2.ToString());
+
+                            do
+                            {
+                                Console.WriteLine("\nEntrez une chaîne de 0 et de 1 (ou 'q' pour quitter):");
+                                input = Console.ReadLine();
+
+                                if (input.ToLower() == "q")
+                                    break;
+
+                                if (input.All(c => c == '0' || c == '1'))
+                                {
+                                    bool isAccepted = automate2.Validate(input);
+                                    Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Entrée invalide. Veuillez n'utiliser que des 0 et des 1.");
+                                }
+                            } while (true);
+
                             Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
                             Console.ReadKey(true);
                         }
                         else if (selectedIndex == 2)
                         {
                             Console.Clear();
-                            Console.WriteLine("Vous avez sélectionné l'automate partiellement conforme.");
+                            Console.WriteLine("Vous avez sélectionné l'automate Partiellement Conforme.");
+                            Automate automate3 = new Automate(filePath3);
+    
+                            if (!automate3.IsValid)
+                            {
+                                Console.WriteLine("L'automate n'est pas valide. Appuyez sur ENTER pour revenir au menu principal.");
+                                Console.ReadLine();
+                                continue;
+                            }
+    
+                            Console.WriteLine(automate3.ToString());
+
+                            do
+                            {
+                                Console.WriteLine("\nEntrez une chaîne de 0 et de 1 (ou 'q' pour quitter):");
+                                input = Console.ReadLine();
+
+                                if (input.ToLower() == "q")
+                                    break;
+
+                                if (input.All(c => c == '0' || c == '1'))
+                                {
+                                    bool isAccepted = automate3.Validate(input);
+                                    Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Entrée invalide. Veuillez n'utiliser que des 0 et des 1.");
+                                }
+                            } while (true);
+
                             Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
                             Console.ReadKey(true);
                         }
                         else if (selectedIndex == 3)
                         {
                             Console.Clear();
-                            Console.WriteLine("Vous avez sélectionné l'automate sans état.");
+                            Console.WriteLine("Vous avez sélectionné l'automate Sans Etat.");
+                            Automate automate4 = new Automate(filePath4);
+    
+                            if (!automate4.IsValid)
+                            {
+                                Console.WriteLine("L'automate n'est pas valide. Appuyez sur ENTER pour revenir au menu principal.");
+                                Console.ReadLine();
+                                continue;
+                            }
+    
+                            Console.WriteLine(automate4.ToString());
+
+                            do
+                            {
+                                Console.WriteLine("\nEntrez une chaîne de 0 et de 1 (ou 'q' pour quitter):");
+                                input = Console.ReadLine();
+
+                                if (input.ToLower() == "q")
+                                    break;
+
+                                if (input.All(c => c == '0' || c == '1'))
+                                {
+                                    bool isAccepted = automate4.Validate(input);
+                                    Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Entrée invalide. Veuillez n'utiliser que des 0 et des 1.");
+                                }
+                            } while (true);
+
                             Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
                             Console.ReadKey(true);
                         }
                         else if (selectedIndex == 4)
                         {
                             Console.Clear();
-                            Console.WriteLine("Vous avez sélectionné l'automate sans état initial.");
+                            Console.WriteLine("Vous avez sélectionné l'automate Sans Etat Initial.");
+                            Automate automate5 = new Automate(filePath5);
+    
+                            if (!automate5.IsValid)
+                            {
+                                Console.WriteLine("L'automate n'est pas valide. Appuyez sur ENTER pour revenir au menu principal.");
+                                Console.ReadLine();
+                                continue;
+                            }
+    
+                            Console.WriteLine(automate5.ToString());
+
+                            do
+                            {
+                                Console.WriteLine("\nEntrez une chaîne de 0 et de 1 (ou 'q' pour quitter):");
+                                input = Console.ReadLine();
+
+                                if (input.ToLower() == "q")
+                                    break;
+
+                                if (input.All(c => c == '0' || c == '1'))
+                                {
+                                    bool isAccepted = automate5.Validate(input);
+                                    Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Entrée invalide. Veuillez n'utiliser que des 0 et des 1.");
+                                }
+                            } while (true);
+
                             Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
                             Console.ReadKey(true);
                         }
