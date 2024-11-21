@@ -1,0 +1,6 @@
+transition s0 0 s1
+transition s0 1 s0
+transition s1 0 s1
+transition s1 1 s2
+transition s2 0 s1
+transition s2 1 s3

@@ -46,3 +46,20 @@ D:\École\Session 5\MathInfo\PIF1006\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.dl
 D:\École\Session 5\MathInfo\PIF1006\PIF1006-tp1\obj\Debug\net5.0\ref\PIF1006-tp1.dll
 D:\École\Session 5\MathInfo\PIF1006\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.pdb
 D:\École\Session 5\MathInfo\PIF1006\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.genruntimeconfig.cache
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\bin\Debug\net5.0\PIF1006-tp1.exe
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\bin\Debug\net5.0\PIF1006-tp1.deps.json
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\bin\Debug\net5.0\PIF1006-tp1.runtimeconfig.json
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\bin\Debug\net5.0\PIF1006-tp1.runtimeconfig.dev.json
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\bin\Debug\net5.0\PIF1006-tp1.dll
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\bin\Debug\net5.0\PIF1006-tp1.pdb
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.csproj.AssemblyReference.cache
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.AssemblyInfoInputs.cache
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.AssemblyInfo.cs
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.csproj.CoreCompileInputs.cache
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.sourcelink.json
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.dll
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\refint\PIF1006-tp1.dll
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.pdb
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\PIF1006-tp1.genruntimeconfig.cache
+C:\Users\ocean\RiderProjects\PIF1006---Projet-de-session\PIF1006-tp1\obj\Debug\net5.0\ref\PIF1006-tp1.dll

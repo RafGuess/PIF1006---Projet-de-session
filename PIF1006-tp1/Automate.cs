@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -75,14 +76,20 @@ namespace PIF1006_tp1
                                 Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "State definition is incomplete."));
                                 break;
                             }
-                            string nom = mots[1];
-                        
+                            
+                            // Nom de l'etat
+                            string nomEtat = mots[1];
+                            
+                            // si etat final
                             bool isFinal = mots[2] == "1";
-
-                            State state = new State(nom, isFinal);
-                        
+                            
+                            // creation de letat
+                            State state = new State(nomEtat, isFinal);
+                            
+                            // Ajout de l'etat a la liste
                             States.Add(state);
-
+                            
+                            // Si etat initial
                             if (mots[3] == "1")
                             {
                                 if (InitialState != null)
@@ -99,13 +106,17 @@ namespace PIF1006_tp1
                                 Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Transition definition is incomplete."));
                                 break;
                             }
-                            string initialState = mots[1];
+                            
+                            // Valeurs
+                            string initialStateTransition = mots[1];
                             char input = mots[2][0];
-                            string TransiteTo = mots[3];
-                        
-                            State stateFound = States.FirstOrDefault(state => state.Name == initialState);
-                            State transitStateFound = States.FirstOrDefault(state => state.Name == TransiteTo);
-
+                            string transiteTo = mots[3];
+                            
+                            // Cherche si les etats font bien partie de la liste d'etat
+                            State stateFound = States.FirstOrDefault(state => state.Name == initialStateTransition);
+                            State transitStateFound = States.FirstOrDefault(state => state.Name == transiteTo);
+                            
+                            // Si state ne sont pas dans la liste message derreur
                             if (stateFound == null || transitStateFound == null)
                             {
                                 Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Initial state or transition state not found."));
@@ -143,12 +154,14 @@ namespace PIF1006_tp1
                 }
             }
             
+            // Verifie si l'automate a des etats
             if (!States.Any())
             {
                 Erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etats dans l'automate"));
                 IsValid = false;
             }
             
+            // Verifie si l'automate a un etat initial
             if (InitialState != null)
             {
                 Console.WriteLine($"Initial State: {InitialState.Name}");
@@ -157,7 +170,7 @@ namespace PIF1006_tp1
             else
             {
                 Erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etat inital dans l'automate"));
-                IsValid = false;
+                IsValid = false;    // isValid = false si pas d'etat inital
             }
 
             foreach (var state in States)
@@ -176,7 +189,7 @@ namespace PIF1006_tp1
             }
             else
             {
-                Console.WriteLine("File processed successfully.");
+                Console.WriteLine("File processed without errors.");
             }
             
             Console.WriteLine(IsValid);
@@ -195,17 +208,42 @@ namespace PIF1006_tp1
             //     à la console avec la ligne/raison du "rejet".
         }
 
-        public bool Validate(string input)
+        public bool Validate(string userInput)
         {
             bool isValid = true;
             Reset();
+            
+            char[] inputs = userInput.ToCharArray();
 
-            // Vous devez transformer l'input en une liste / un tableau de caractères (char) et les lire un par un;
-            // L'automate doit maintenant à jour son "CurrentState" en suivant les transitions et en respectant l'input.
+            foreach (var input in inputs)
+            {
+                State EtatInitialTransition = CurrentState;
+                State etatTransite = EtatInitialTransition.Transitions.FirstOrDefault(transit => transit.Input == input)
+                    ?.TransiteTo;   // Todo erreur: Etat transiter existe pas, input aussi
+
+                if (etatTransite == null)
+                {
+                    // No valid transition found for the current input; input is invalid.
+                    Console.WriteLine($"No transition found for state '{EtatInitialTransition.Name}' with input '{input}'");
+                    isValid = false;
+                    break;
+                }
+                
+                CurrentState = etatTransite;
+                Console.WriteLine($"Transitioned from state '{EtatInitialTransition.Name}' with input '{input}' to state '{etatTransite.Name}'");
+            }
+
+            if (!CurrentState.IsFinal)
+            {
+                isValid = false;
+            }
+            
+            // Vous devez transformer l'input en une liste / un tableau de caractères (char) et les lire un par un;         // OK
+            // L'automate doit maintenant à jour son "CurrentState" en suivant les transitions et en respectant l'input.    // Ok
             // Considérez que l'automate est déterministe et que même si dans les faits on aurait pu mettre plusieurs
-            // transitions possibles pour un état et un input donné, le 1er trouvé dans la liste est le chemin emprunté.
-            // Si aucune transition n'est trouvé pour un état courant et l'input donné, cela doit retourner faux;
-            // Si tous les caractères ont été pris en compte, on vérifie si l'état courant est final ou non et on retourne
+            // transitions possibles pour un état et un input donné, le 1er trouvé dans la liste est le chemin emprunté.    // Ne devrais pas arriver donc ok
+            // Si aucune transition n'est trouvé pour un état courant et l'input donné, cela doit retourner faux;           // A verifier
+            // Si tous les caractères ont été pris en compte, on vérifie si l'état courant est final ou non et on retourne  // OK
             // vrai ou faux selon.
 
             // VOUS DEVEZ OBLIGATOIREMENT AFFICHER la suite des états actuel, input lu, et état transité pour qu'on puisse
@@ -217,13 +255,41 @@ namespace PIF1006_tp1
         public void Reset()
         {
             // Vous devez faire du code pour indiquer ce que signifie réinitialiser l'automate avant chaque validation.
+            CurrentState = InitialState;
         }
         
         public override string ToString()
-        {   
-            // Vous devez modifier cette partie de sorte à retourner un équivalent string qui décrit tous les états et
-            // la table de transitions de l'automate.
-            return base.ToString(); // On ne retournera donc pas le ToString() par défaut
+        {
+            StringBuilder sb = new StringBuilder();
+
+            Console.WriteLine("\n--- Représentation de l'automate ---\n");
+            foreach (var state in States)
+            {
+                // Afficher l'état initial avec des crochets carrés
+                if (state == InitialState)
+                {
+                    sb.AppendLine($"[{state.Name}]{(state.IsFinal ? ")" : "")}");
+                }
+                // Afficher les états finaux avec des parenthèses
+                else if (state.IsFinal)
+                {
+                    sb.AppendLine($"({state.Name})");
+                }
+                else
+                {
+                    sb.AppendLine(state.Name);
+                }
+
+                // Afficher les transitions pour chaque état
+                foreach (var transition in state.Transitions)
+                {
+                    sb.AppendLine($"--{transition.Input}--> {transition.TransiteTo.Name}");
+                }
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
         
         
