@@ -1,6 +1,7 @@
 ﻿/*---------------------------------------------------------------------------------
  *  Transition : Représente un tuple -> (input entré par l'utilisateur, nouvel état transité)
- *  Auteurs : Abderraouf Guessoum, Julien Desrosiers(DESJ70100201), Abderraouf Guessoum, Lily Occhibelli (OCCL72360500), Océane Rakotoarisoa(RAKS77350500)               
+ *  Auteurs : Abderraouf Guessoum, Julien Desrosiers(DESJ70100201),
+ *            Lily Occhibelli (OCCL72360500), Océane Rakotoarisoa(RAKS77350500)               
  *  Date : 26/11/2024
  *  Cours : PIF1006 - Automne 2024 
  *----------------------------------------------------------------------------------*/
