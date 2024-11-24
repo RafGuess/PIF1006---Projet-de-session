@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*---------------------------------------------------------------------------------
+ *  Transition : Représente un tuple -> (input entré par l'utilisateur, nouvel état transité)
+ *  Auteurs : Abderraouf Guessoum, Julien Desrosiers(DESJ70100201), Abderraouf Guessoum, Lily Occhibelli (OCCL72360500), Océane Rakotoarisoa(RAKS77350500)               
+ *  Date : 26/11/2024
+ *  Cours : PIF1006 - Automne 2024 
+ *----------------------------------------------------------------------------------*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,15 +13,12 @@ using System.Threading.Tasks;
 
 namespace PIF1006_tp1
 {
-    /// <summary>
-    /// Une transition représente un tuple (input, nouvel état transité)
-    /// </summary>
     public class Transition
     {
-        public char Input { get; set; }
-        public State TransiteTo { get; set; }
+        public char Input { get; set; }                      // Un caractère de l'input entré par l'utilisateur
+        public State TransiteTo { get; set; }               // État cible vers lequel la transition se fait.
         
-        public Transition(char input, State transiteTo)
+        public Transition(char input, State transiteTo)     //Construit une transition       
         {
             Input = input;
             TransiteTo = transiteTo;
@@ -22,7 +26,7 @@ namespace PIF1006_tp1
 
         public override string ToString()
         {
-            return $"{Input} -> {TransiteTo.Name}";
+            return $"{Input} -> {TransiteTo.Name}";         //Affiche une transition
         }
     }
 }
