@@ -16,9 +16,10 @@ namespace PIF1006_tp1
             string filePath3 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Automates\AutomatePartiellementConforme.txt");
             string filePath4 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Automates\AutomateSansEtat.txt");
             string filePath5 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Automates\AutomateSansEtatInitial.txt");
+            string filePath6 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Automates\AutomateAvecJambon.txt");
 
             // Définir les options de menu
-            string[] options = { "Automate Conforme", "Automate Non Déterministe", "Automate Partiellement Conforme", "Automate Sans Etat", "Automate Sans Etat Initial", "Quitter" };
+            string[] options = { "Automate Conforme", "Automate Non Déterministe", "Automate Partiellement Conforme", "Automate Sans Etat", "Automate Sans Etat Initial", "Automate avec des erreurs", "Quitter" };
             int selectedIndex = 0;
 
             while (true)
@@ -230,6 +231,7 @@ namespace PIF1006_tp1
                             Console.WriteLine("Vous avez sélectionné l'automate Sans Etat Initial.");
                             Automate automate5 = new Automate(filePath5);
 
+
                             if (!automate5.IsValid)
                             {
                                 Console.WriteLine("L'automate n'est pas valide.\nUn automate sans état initial ne peut pas accepter de valeur d'entrée.\nAppuyez sur ENTER pour revenir au menu principal");
@@ -252,6 +254,48 @@ namespace PIF1006_tp1
                                 if (input.All(c => c == '0' || c == '1'))
                                 {
                                     bool isAccepted = automate5.Validate(input);
+                                    Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Entrée invalide. Veuillez n'utiliser que des 0 et des 1.");
+                                }
+                            } while (true);
+
+                            Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
+                            Console.ReadKey(true);
+                        }
+                        else if (selectedIndex == 5)
+                        {
+                            // Automate Sans Etat Initial
+                            Console.Clear();
+                            Console.WriteLine("Vous avez sélectionné l'automate avec des erreurs.");
+                            Automate automate6 = new Automate(filePath6);
+                            
+                            Console.WriteLine("L'automate a ignoré le jambon, on ne rigole pas avec le cholestérol.");
+                            
+                            if (!automate6.IsValid)
+                            {
+                                Console.WriteLine("L'automate n'est pas valide.\nUn automate avec un jambon se digère mal.\nAppuyez sur ENTER pour revenir au menu principal");
+                                Console.ReadLine();
+                                continue;
+                            }
+
+                            Console.WriteLine(automate6.ToString());
+
+                            // Demander et valider les chaînes d'input
+                            string input;
+                            do
+                            {
+                                Console.WriteLine("\nEntrez une chaîne de 0 et de 1 (ou 'q' pour quitter):");
+                                input = Console.ReadLine();
+
+                                if (input.ToLower() == "q")
+                                    break;
+
+                                if (input.All(c => c == '0' || c == '1'))
+                                {
+                                    bool isAccepted = automate6.Validate(input);
                                     Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
                                 }
                                 else
