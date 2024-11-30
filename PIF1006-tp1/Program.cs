@@ -92,7 +92,7 @@ namespace PIF1006_tp1
 
                                 if (input.All(c => c == '0' || c == '1'))
                                 {
-                                    bool isAccepted = automate1.Validate(input);
+                                    bool isAccepted = automate1.ValidateInput(input);
                                     Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
                                 }
                                 else
@@ -132,7 +132,7 @@ namespace PIF1006_tp1
 
                                 if (input.All(c => c == '0' || c == '1'))
                                 {
-                                    bool isAccepted = automate2.Validate(input);
+                                    bool isAccepted = automate2.ValidateInput(input);
                                     Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
                                 }
                                 else
@@ -172,7 +172,7 @@ namespace PIF1006_tp1
 
                                 if (input.All(c => c == '0' || c == '1'))
                                 {
-                                    bool isAccepted = automate3.Validate(input);
+                                    bool isAccepted = automate3.ValidateInput(input);
                                     Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
                                 }
                                 else
@@ -212,7 +212,7 @@ namespace PIF1006_tp1
 
                                 if (input.All(c => c == '0' || c == '1'))
                                 {
-                                    bool isAccepted = automate4.Validate(input);
+                                    bool isAccepted = automate4.ValidateInput(input);
                                     Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
                                 }
                                 else
@@ -253,7 +253,7 @@ namespace PIF1006_tp1
 
                                 if (input.All(c => c == '0' || c == '1'))
                                 {
-                                    bool isAccepted = automate5.Validate(input);
+                                    bool isAccepted = automate5.ValidateInput(input);
                                     Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
                                 }
                                 else
@@ -295,7 +295,7 @@ namespace PIF1006_tp1
 
                                 if (input.All(c => c == '0' || c == '1'))
                                 {
-                                    bool isAccepted = automate6.Validate(input);
+                                    bool isAccepted = automate6.ValidateInput(input);
                                     Console.WriteLine(isAccepted ? "L'automate accepte la chaîne." : "L'automate rejette la chaîne.");
                                 }
                                 else

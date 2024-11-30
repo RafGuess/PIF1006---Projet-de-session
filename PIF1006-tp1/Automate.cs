@@ -19,9 +19,13 @@ namespace PIF1006_tp1
         public List<State> States { get; private set; }
         public bool IsValid { get; private set; }
         
+        // 
+        public List<Tuple<string, string>> _erreurs;
+        
         public Automate(string filePath) //string filePath
         {
             States = new List<State>();
+            _erreurs = new List<Tuple<string, string>>();
             LoadFromFile(filePath);
         }
 
@@ -47,20 +51,21 @@ namespace PIF1006_tp1
             //     et on l'ajoute à une liste d'état; les 2 et 3e argument représentent alors si c'est un état final, puis si c'est l'état initial
             //   - Si c'est "transition" on cherche dans la liste d'état l'état qui a le nom en 1er argument et on ajoute la transition avec les 2 autres
             //     arguments à sa liste
-
+            
+            
             IsValid = true;
+            
+            // 
             if (!File.Exists(filePath))
             {
                 throw new FileNotFoundException($"File not found: {filePath}");
             }
-            
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 throw new ArgumentNullException(nameof(filePath), "File path cannot be null or empty.");
             }   
             
-            List<Tuple<string, string>> Erreurs = new List<Tuple<string, string>>();
-            
+            //
             foreach (var (ligne, index) in File.ReadLines(filePath).Select((line, index) => (line, index + 1)))
             {
 
@@ -69,11 +74,13 @@ namespace PIF1006_tp1
                     string[] mots = ligne.Split(' ');
 
                     switch (mots[0])
-                    {
+                    {   
+                        // 
                         case "state":
                             if (mots.Length < 4)
                             {
-                                Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "State definition is incomplete."));
+                                //_erreurs.Add(new Tuple<string, string>(index + " " + ligne, "State definition is incomplete."));
+                                throw new Exception("State definition is incomplete");  
                                 break;
                             }
                             
@@ -99,11 +106,13 @@ namespace PIF1006_tp1
                                 InitialState = state;
                             }
                             break;
-
+                        
+                        //
                         case "transition":
                             if (mots.Length < 4)
                             {
-                                Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Transition definition is incomplete."));
+                                //_erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Transition definition is incomplete."));
+                                throw new Exception("Transition definition is incomplete.");  
                                 break;
                             }
                             
@@ -119,82 +128,48 @@ namespace PIF1006_tp1
                             // Si state ne sont pas dans la liste message derreur
                             if (stateFound == null || transitStateFound == null)
                             {
-                                Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Initial state or transition state not found."));
+                                //_erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Initial state or transition state not found."));
+                                throw new Exception("Initial state or transition state not found."); 
                             }
-                            else
+
+                            bool inputExiste = stateFound.Transitions.Any(t => t.Input == input);
+
+                            if (inputExiste)
                             {
-                                stateFound.Transitions.Add(new Transition(input, transitStateFound));
+                                //_erreurs.Add(new Tuple<string, string>(index + " " + ligne, $"L'input:{input} était déjà utilisé donc on la supprime -- (Determinisation facile)."));
+                                throw new Exception($"L'input: {input} était déjà utilisé donc on la supprime -- (Determinisation facile)."); 
                             }
-                            
-                            // TODO() La on add la transition pour ensuite la supprimer
-                            List<char> inputs = new List<char>();
-                            foreach (var transition in stateFound.Transitions.ToList())
-                            {
-                                if (inputs.Contains(transition.Input))
-                                {
-                                    stateFound.Transitions.Remove(transition);
-                                    Erreurs.Add(new Tuple<string, string>(index + " " + ligne, $"L'input:{transition.Input} était déjà utilisé donc on la supprime -- (Determinisation facile)."));
-                                }
-                                else
-                                {
-                                    inputs.Add(transition.Input);
-                                }
-                            }
+                            stateFound.Transitions.Add(new Transition(input, transitStateFound));
                             
                             break;
 
                         default:
-                            Erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Mot non reconnue"));
+                            //_erreurs.Add(new Tuple<string, string>(index + " " + ligne, "Mot non reconnue"));
+                            throw new Exception("Mot non reconnue"); 
                             break;
                     }
                 }
                 catch(Exception ex)
                 {
-                    Erreurs.Add(new Tuple<string, string>(index + " " + ligne, ex.Message));
+                    _erreurs.Add(new Tuple<string, string>($"Error on line: {index}: " + ligne, ex.Message));
                 }
             }
             
-            // Verifie si l'automate a des etats
-            if (!States.Any())
-            {
-                Erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etats dans l'automate"));
-                IsValid = false;
-            }
+            // Verifie si automate valide
+            IsValid = ValidateAutomate();
             
-            // Verifie si l'automate a un etat initial
-            if (InitialState != null)
-            {
-                Console.WriteLine($"Initial State: {InitialState.Name}");
-                CurrentState = InitialState;
-            }
-            else
-            {
-                Erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etat inital dans l'automate"));
-                IsValid = false;    // isValid = false si pas d'etat inital
-            }
-
-            foreach (var state in States)
-            {
-                Console.WriteLine($"State: {state.Name}, Final: {state.IsFinal}");
-                Console.WriteLine($"Transitions: {string.Join(", ", state.Transitions.Select(t => t.ToString()))}");
-            }
-
             // Log errors if any
-            if (Erreurs.Any())
+            if (_erreurs.Any())
             {
-                foreach (var error in Erreurs)
+                foreach (var error in _erreurs)
                 {
-                    Console.WriteLine($"Error on Line: {error.Item1}: {error.Item2}");
+                    Console.WriteLine($"{error.Item1}, {error.Item2}");
                 }
             }
             else
             {
                 Console.WriteLine("File processed without errors.");
             }
-            
-            Console.WriteLine(IsValid);
-            
-            
 
             // Considérez que:
             //   - S'il y a d'autres termes, les lignes pourraient être ignorées;   // OK
@@ -208,7 +183,94 @@ namespace PIF1006_tp1
             //     à la console avec la ligne/raison du "rejet".
         }
 
-        public bool Validate(string userInput)
+        private bool ValidateAutomate()
+        {
+            bool valide = true;
+            try
+            {
+                // Verifie si l'automate a des etats
+                if (!States.Any())
+                {
+                    //_erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etats dans l'automate"));
+                    valide = false;
+                    throw new Exception("Il ny a pas d'etats dans l'automate"); 
+                }
+
+                // Verifie si l'automate a un etat initial
+                if (InitialState != null)
+                {
+                    CurrentState = InitialState;
+                }
+                else
+                {
+                    //_erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etat inital dans l'automate")); 
+                    valide = false;
+                    throw new Exception("Il ny a pas d'etat inital dans l'automate"); 
+                }
+                
+                State currentState = InitialState;
+                valide = TrouverCheminFinal(currentState);
+            }
+            catch (Exception ex)
+            {
+                _erreurs.Add(new Tuple<string, string>("Erreur lors de la validation de l'automate: ", ex.Message));
+            }
+            return valide;
+        }
+
+        private bool TrouverCheminFinal(State currentState, List<State> stateAlreadyCheck = null)
+        {
+            try
+            {
+                // Si stateAlreadyCheck est null, on l'initialise à une nouvelle liste.
+                if (stateAlreadyCheck == null)
+                {
+                    stateAlreadyCheck = new List<State>();
+                }
+            
+                // Ajouter l'état courant à la liste des états déjà vérifiés
+                stateAlreadyCheck.Add(currentState);
+            
+                foreach (var transition in currentState.Transitions)
+                {
+                    State state = transition.TransiteTo;
+
+                    if (!state.IsFinal && !stateAlreadyCheck.Contains(state))
+                    {
+                        Console.WriteLine($"Exploration de l'état: {state.Name}");
+                        // Appel récursif pour explorer cet état
+                        bool result = TrouverCheminFinal(state, stateAlreadyCheck);
+                        if (result)
+                        {
+                            // Si l'état final a été trouvé dans les appels récursifs, retourner true
+                            return true;
+                        }
+                    }
+                
+                    else if(state.IsFinal)
+                    {   
+                        Console.WriteLine($"L'automate a un etat final accessible!");
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"L'état {state.Name} a déjà été vérifié.");
+                    }
+                
+                }
+            
+                _erreurs.Add(new Tuple<string, string>("Erreur lors de la validation de l'atteinte d'un chemin final", "Il ny a pas de chemin atteignant un etat final dans l'automate"));
+                return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        
+        
+        public bool ValidateInput(string userInput)
         {
             bool isValid = true;
             Reset();
