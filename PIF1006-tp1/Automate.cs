@@ -56,7 +56,7 @@ namespace PIF1006_tp1
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 throw new ArgumentNullException(nameof(filePath), "Le chemin du fichier ne peut pas être nul ou vide.");
-            }   
+            }  
             
             // Parcourt chaque ligne du fichier, identifie son type (état, transition ou erreur),
             foreach (var (ligne, index) in File.ReadLines(filePath).Select((line, index) => (line, index + 1)))
@@ -70,10 +70,10 @@ namespace PIF1006_tp1
                     {   
                         // Traite la définition d'un état
                         case "state":
-                            if (mots.Length < 4)
+                            if (mots.Length!=4)
                             {
                                 //_erreurs.Add(new Tuple<string, string>(index + " " + ligne, "La définition de l'état est incomplète"));
-                                throw new Exception("La définition de l'état est incomplète");  
+                                throw new Exception("La définition de l'état est incorecte");  
                                 break;
                             }
                             
@@ -102,10 +102,10 @@ namespace PIF1006_tp1
                         
                         // Traite la définition d'une transition entre deux états
                         case "transition":
-                            if (mots.Length < 4)
+                            if (mots.Length!=4)
                             {
                                 //_erreurs.Add(new Tuple<string, string>(index + " " + ligne, "La définition de la transition est incomplète."));
-                                throw new Exception("La définition de la transition est incomplète.");  
+                                throw new Exception("La définition de la transition est incorecte.");  
                                 break;
                             }
                             
@@ -250,7 +250,7 @@ namespace PIF1006_tp1
                     }
                 
                 }
-            
+                
                 _erreurs.Add(new Tuple<string, string>("Erreur lors de la validation de l'atteinte d'un chemin final", "Il ny a pas de chemin atteignant un état final dans l'automate"));
                 return false;
             }
