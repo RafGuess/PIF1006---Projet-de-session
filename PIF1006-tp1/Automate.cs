@@ -220,26 +220,10 @@ namespace PIF1006_tp1
                     valide = false;
                     throw new Exception("Il n'y a pas d'état initial dans l'automate");
                 }
-
-                // Vérifie les transitions pour détecter les cas de non-déterminisme
-                foreach (var state in States)
-                {
-                    // Regroupe les transitions par input
-                    var groupedInputs = state.Transitions.GroupBy(t => t.Input);
-
-                    foreach (var group in groupedInputs)
-                    {
-                        // Si un même input a plus d'une transition, l'automate est non-déterministe
-                        if (group.Count() > 1)
-                        {
-                            valide = false;
-                            _erreurs.Add(new Tuple<string, string>("", $"Automate non-déterministe détecté à l'état '{state.Name}' avec l'entrée '{group.Key}'."));
-                        }
-                    }
-                }
+                
 
                 // Valide la présence d'un chemin vers un état final
-                valide = valide && TrouverCheminFinal(InitialState);
+                valide = TrouverCheminFinal(InitialState);
             }
             catch (Exception ex)
             {
