@@ -1,3 +1,12 @@
+/*
+ Program.cs : Lance le programme principal 
+ Auteurs : Julien Desrosiers, Lily Occhibelli, Océane Rakotoarisoa, Abderraouf Guessoum
+ Cours : PIF1006 - Groupe 29
+ Session : Automne 2024
+ Projet : TP1
+ */
+
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +21,7 @@ namespace PIF1006_tp1
         public State InitialState { get; private set; }     // Propriété représentant l'état initial de l'automate
         public State CurrentState { get; private set; }     // Propriété représentant l'état courant de l'automate
         public List<State> States { get; private set; }     // Liste des états de l'automate
-        public bool IsValid { get; private set; }           // Indicateur booléen pour savoir si l'automate est valide
+        public bool isValid { get; private set; }           // Indicateur booléen pour savoir si l'automate est valide
         
         public List<Tuple<string, string>> _erreurs;        // Liste de Tuple contenant les erreurs de l'automate
         
@@ -124,15 +133,16 @@ namespace PIF1006_tp1
                                 throw new Exception("L'état initial ou l'état de transition est introuvable."); 
                             }
 
+                            // Vérification du déterminisme : Si l'état a déjà une transition pour cet input
                             bool inputExiste = stateFound.Transitions.Any(t => t.Input == input);
-
                             if (inputExiste)
                             {
-                                //_erreurs.Add(new Tuple<string, string>(index + " " + ligne, $"L'input:{input} était déjà utilisé donc on la supprime -- (Determinisation facile)."));
-                                throw new Exception($"L'input: {input} était déjà utilisé pour l'automate {stateFound}, donc on la supprime -- (Déterminisation facile)."); 
+                                isValid = false; // L'automate devient invalide
+                                throw new Exception($"Automate non-déterministe détecté à l'état '{stateFound.Name}' avec l'entrée '{input}'.");
                             }
-                            stateFound.Transitions.Add(new Transition(input, transitStateFound));
                             
+                            // Ajouter la transition seulement si elle est valide
+                            stateFound.Transitions.Add(new Transition(input, transitStateFound));
                             break;
 
                         default:
@@ -148,7 +158,19 @@ namespace PIF1006_tp1
             }
             
             // Valide la structure de l'automate
-            IsValid = ValidateAutomate();
+            isValid = ValidateAutomate();
+            
+            // Si l'automate est invalide, afficher les erreurs et arrêter
+            if (!isValid)
+            {
+                Console.WriteLine("L'automate n'est pas valide. Voici les erreurs détectées :");
+                foreach (var error in _erreurs)
+                {
+                    Console.WriteLine($"[Erreur] {error.Item1}: {error.Item2}");
+                }
+                return; // Arrête le chargement
+            }
+            
             
             // Affiche les erreurs s'il y en a
             if (_erreurs.Any())
@@ -160,7 +182,7 @@ namespace PIF1006_tp1
             }
             else
             {
-                Console.WriteLine("Félicitation votre automate n'a aucune erreur");
+                Console.WriteLine("[ACCEPTATION] : Félicitations votre automate n'a aucune erreur !");
             }
 
             // Considérez que:
@@ -184,9 +206,8 @@ namespace PIF1006_tp1
                 // Vérifie si l'automate à des états
                 if (!States.Any())
                 {
-                    //_erreurs.Add(new Tuple<string, string>("", "Il ny a pas d'etats dans l'automate"));
                     valide = false;
-                    throw new Exception("Il n'y a pas d'états dans l'automate"); 
+                    throw new Exception("Il n'y a pas d'états dans l'automate");
                 }
 
                 // Vérifie si l'automate a un état initial
@@ -196,12 +217,29 @@ namespace PIF1006_tp1
                 }
                 else
                 {
-                    //_erreurs.Add(new Tuple<string, string>("", "Il n'y a pas d'état initial dans l'automate")); 
                     valide = false;
-                    throw new Exception("Il n'y a pas d'état initial dans l'automate"); 
+                    throw new Exception("Il n'y a pas d'état initial dans l'automate");
                 }
-                
-                valide = TrouverCheminFinal(InitialState);
+
+                // Vérifie les transitions pour détecter les cas de non-déterminisme
+                foreach (var state in States)
+                {
+                    // Regroupe les transitions par input
+                    var groupedInputs = state.Transitions.GroupBy(t => t.Input);
+
+                    foreach (var group in groupedInputs)
+                    {
+                        // Si un même input a plus d'une transition, l'automate est non-déterministe
+                        if (group.Count() > 1)
+                        {
+                            valide = false;
+                            _erreurs.Add(new Tuple<string, string>("", $"Automate non-déterministe détecté à l'état '{state.Name}' avec l'entrée '{group.Key}'."));
+                        }
+                    }
+                }
+
+                // Valide la présence d'un chemin vers un état final
+                valide = valide && TrouverCheminFinal(InitialState);
             }
             catch (Exception ex)
             {
@@ -209,6 +247,7 @@ namespace PIF1006_tp1
             }
             return valide;
         }
+
 
         private bool TrouverCheminFinal(State currentState, List<State> stateAlreadyCheck = null)
         {

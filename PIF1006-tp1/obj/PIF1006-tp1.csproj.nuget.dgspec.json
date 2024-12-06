@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ocean\\RiderProjects\\PIF1006---Projet-de-session\\PIF1006-tp1\\PIF1006-tp1.csproj": {}
+    "C:\\Users\\ocean\\Downloads\\pif1006_tp1\\PIF1006-tp1\\PIF1006-tp1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ocean\\RiderProjects\\PIF1006---Projet-de-session\\PIF1006-tp1\\PIF1006-tp1.csproj": {
+    "C:\\Users\\ocean\\Downloads\\pif1006_tp1\\PIF1006-tp1\\PIF1006-tp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ocean\\RiderProjects\\PIF1006---Projet-de-session\\PIF1006-tp1\\PIF1006-tp1.csproj",
+        "projectUniqueName": "C:\\Users\\ocean\\Downloads\\pif1006_tp1\\PIF1006-tp1\\PIF1006-tp1.csproj",
         "projectName": "PIF1006-tp1",
-        "projectPath": "C:\\Users\\ocean\\RiderProjects\\PIF1006---Projet-de-session\\PIF1006-tp1\\PIF1006-tp1.csproj",
+        "projectPath": "C:\\Users\\ocean\\Downloads\\pif1006_tp1\\PIF1006-tp1\\PIF1006-tp1.csproj",
         "packagesPath": "C:\\Users\\ocean\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ocean\\RiderProjects\\PIF1006---Projet-de-session\\PIF1006-tp1\\obj\\",
+        "outputPath": "C:\\Users\\ocean\\Downloads\\pif1006_tp1\\PIF1006-tp1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ocean\\AppData\\Roaming\\NuGet\\NuGet.Config",
