@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PIF1006-tp1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4ff426655be92d61e473206f58263c52b5f38e5e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c181f6cd5d9ed65a9f59cc41f8a06c35784ae7da")]
 [assembly: System.Reflection.AssemblyProductAttribute("PIF1006-tp1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PIF1006-tp1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

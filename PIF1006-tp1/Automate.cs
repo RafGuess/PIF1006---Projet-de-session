@@ -223,7 +223,8 @@ namespace PIF1006_tp1
                 
 
                 // Valide la présence d'un chemin vers un état final
-                valide = TrouverCheminFinal(InitialState);
+                valide = 
+                    TrouverCheminFinal(InitialState);
             }
             catch (Exception ex)
             {
@@ -274,7 +275,7 @@ namespace PIF1006_tp1
                 
                 }
                 
-                _erreurs.Add(new Tuple<string, string>("Erreur lors de la validation de l'atteinte d'un chemin final", "Il ny a pas de chemin atteignant un état final dans l'automate"));
+                _erreurs.Add(new Tuple<string, string>("Erreur lors de la validation de l'atteinte d'un chemin final", "Il n'y a pas de chemin atteignant un état final dans l'automate..."));
                 return false;
             }
             catch (Exception e)

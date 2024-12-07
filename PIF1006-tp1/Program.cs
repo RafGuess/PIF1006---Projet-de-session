@@ -226,7 +226,7 @@ namespace PIF1006_tp1
 
                             if (!automate5.isValid)
                             {
-                                Console.WriteLine("\n-------------------------------------------------\n[REJET] : L'automate n'est pas valide.Un automate sans état initial ne peut pas accepter de valeur d'entrée.\nAppuyez sur ENTER pour revenir au menu principal-------------------------------------------------\n");
+                                Console.WriteLine("\n-------------------------------------------------\n[REJET] : L'automate n'est pas valide.Un automate sans état initial ne peut pas accepter de valeur d'entrée.\nAppuyez sur ENTER pour revenir au menu principal\n-------------------------------------------------\n");
                                 Console.ReadLine();
                                 continue;
                             }
@@ -265,7 +265,7 @@ namespace PIF1006_tp1
                             Automate automate6 = new Automate(filePath6);
                             
                             Console.WriteLine("\n-------------------------------------------------\n[REJET] " +
-                                              ":L'automate a ignoré le jambon, on ne rigole pas avec le cholestérol.-------------------------------------------------\n");
+                                              ":L'automate a ignoré le jambon, on ne rigole pas avec le cholestérol.\n-------------------------------------------------\n");
                             if (automate6.isValid)
                             {
                                 Console.WriteLine("\nL'automate n'est pas valide.\nUn automate avec un jambon se digère mal.\nAppuyez sur ENTER pour revenir au menu principal");
