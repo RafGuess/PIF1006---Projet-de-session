@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks.Sources;
 
 
 namespace PIF1006_tp1
@@ -29,6 +30,7 @@ namespace PIF1006_tp1
         public Automate(string filePath) //string filePath
         {
             States = new List<State>();
+            isValid = true;
             _erreurs = new List<Tuple<string, string>>();
             LoadFromFile(filePath);
         }
@@ -157,8 +159,11 @@ namespace PIF1006_tp1
                 }
             }
             
-            // Valide la structure de l'automate
-            isValid = ValidateAutomate();
+            if (isValid)
+            {
+                // Valide la structure de l'automate
+                isValid = ValidateAutomate();
+            }
             
             // Si l'automate est invalide, afficher les erreurs et arrêter
             if (!isValid)
@@ -223,8 +228,12 @@ namespace PIF1006_tp1
                 
 
                 // Valide la présence d'un chemin vers un état final
-                valide = 
-                    TrouverCheminFinal(InitialState);
+                var CheminFinal = TrouverCheminFinal(InitialState);
+                if (!CheminFinal)
+                {
+                    _erreurs.Add(new Tuple<string, string>("Erreur lors de la validation de l'atteinte d'un chemin final", "Il n'y a pas de chemin atteignant un état final dans l'automate..."));
+                }
+                valide = CheminFinal;
             }
             catch (Exception ex)
             {
@@ -243,7 +252,12 @@ namespace PIF1006_tp1
                 {
                     stateAlreadyCheck = new List<State>();
                 }
-            
+
+                if (currentState.IsFinal)
+                {
+                    return true;
+                }
+                
                 // Ajouter l'état courant à la liste des états déjà vérifiés
                 stateAlreadyCheck.Add(currentState);
             
@@ -274,8 +288,6 @@ namespace PIF1006_tp1
                     }
                 
                 }
-                
-                _erreurs.Add(new Tuple<string, string>("Erreur lors de la validation de l'atteinte d'un chemin final", "Il n'y a pas de chemin atteignant un état final dans l'automate..."));
                 return false;
             }
             catch (Exception e)

@@ -102,16 +102,16 @@ namespace PIF1006_tp1
                             Console.WriteLine("Vous avez sélectionné l'automate Non Déterministe.");
                             Automate automate2 = new Automate(filePath2);
 
-                            if (automate2.isValid)
+                            if (!automate2.isValid)
                                 
                             {
                                 Console.WriteLine("\n-------------------------------------------------\n[REJET] : L'automate n'est pas valide. Appuyez sur ENTER pour revenir au menu principal.\n-------------------------------------------------\n");
                                 Console.ReadLine();
                                 continue;
-                            }
-
-                           Console.WriteLine(automate2.ToString());
-
+                            } 
+                            
+                            Console.WriteLine(automate2.ToString());
+                        
                             // Demander et valider les chaînes d'input
                             string input;
                             do
@@ -132,7 +132,7 @@ namespace PIF1006_tp1
                                     Console.WriteLine("Entrée invalide. Veuillez n'utiliser que des 0 et des 1.");
                                 }
                             } while (true);
-
+                            
                             Console.WriteLine("Appuyez sur une touche pour revenir au menu...");
                             Console.ReadKey(true);
                         }
@@ -259,18 +259,15 @@ namespace PIF1006_tp1
                         }
                         else if (selectedIndex == 5)
                         {
-                            // Automate Sans Etat Initial
+                            // Automate Avec Mot non reconnue
                             Console.Clear();
-                            Console.WriteLine("Vous avez sélectionné l'automate avec des erreurs.");
+                            Console.WriteLine("Vous avez sélectionné l'automate avec des mots non reconnue.");
                             Automate automate6 = new Automate(filePath6);
                             
-                            Console.WriteLine("\n-------------------------------------------------\n[REJET] " +
-                                              ":L'automate a ignoré le jambon, on ne rigole pas avec le cholestérol.\n-------------------------------------------------\n");
-                            if (automate6.isValid)
+                            if (!automate6.isValid)
                             {
-                                Console.WriteLine("\nL'automate n'est pas valide.\nUn automate avec un jambon se digère mal.\nAppuyez sur ENTER pour revenir au menu principal");
+                                Console.WriteLine("\nL'automate n'est pas valide.");
                                 Console.ReadLine();
-                                continue;
                             }
 
                             Console.WriteLine(automate6.ToString());
