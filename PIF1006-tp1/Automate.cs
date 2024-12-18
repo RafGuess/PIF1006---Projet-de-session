@@ -184,11 +184,13 @@ namespace PIF1006_tp1
                 {
                     Console.WriteLine($"{error.Item1}, {error.Item2}");
                 }
+                Console.WriteLine("[ACCEPTATION] : Félicitations votre automate est fonctionnel!");
             }
             else
             {
                 Console.WriteLine("[ACCEPTATION] : Félicitations votre automate n'a aucune erreur !");
             }
+                
 
             // Considérez que:
             //   - S'il y a d'autres termes, les lignes pourraient être ignorées;   // OK
